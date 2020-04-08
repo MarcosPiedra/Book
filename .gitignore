@@ -340,4 +340,4 @@ ASALocalRun/
 healthchecksdb
 
 # Except Log (code)
-!/src/Books**/Log/*
+!/src/**/Log/*
