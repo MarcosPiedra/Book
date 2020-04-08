@@ -165,7 +165,7 @@
       <Project>{C40EE93B-9CAB-4F92-B4AF-D4BEC81C26F4}</Project>
       <Name>Books.CrossCutting</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Books.Model\Books.Domain.csproj">
+    <ProjectReference Include="..\Books.Domain\Books.Domain.csproj">
       <Project>{C59728BE-BBCE-49BB-85B7-FC3B42460B52}</Project>
       <Name>Books.Domain</Name>
     </ProjectReference>
