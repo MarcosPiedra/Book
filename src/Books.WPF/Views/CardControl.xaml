@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Books.WPF.Views.CardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Books.WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel HorizontalAlignment="Center">
+        <StackPanel Width="220" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="130"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" FontWeight="Bold">Title</TextBlock>
+                <TextBox IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Book.Title, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"></TextBox>
+
+                <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" FontWeight="Bold">Author</TextBlock>
+                <TextBox IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Book.Author, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" Grid.Column="1" Grid.Row="1"></TextBox>
+
+                <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" FontWeight="Bold">Description</TextBlock>
+                <TextBox IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Book.Description, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"></TextBox>
+
+                <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" FontWeight="Bold">Publication</TextBlock>
+                <DatePicker IsEnabled="{Binding IsEnable, UpdateSourceTrigger=PropertyChanged}" 
+                            SelectedDate="{Binding Book.PublicationDate, UpdateSourceTrigger=PropertyChanged}"
+                            VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="3"></DatePicker>
+
+                <TextBlock VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" FontWeight="Bold">Is read</TextBlock>
+                <ToggleButton Grid.Row="4" Grid.Column="1"                               
+                              Command="{Binding CheckAsReadCommand}"
+                              IsChecked="{Binding Book.IsRead, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource MaterialDesignSwitchAccentToggleButton}" />
+
+
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

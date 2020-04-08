@@ -1,0 +1,21 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:6169/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express - Books WEB API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "v1/api/books",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:6170/"
+    }
+  }
+}
