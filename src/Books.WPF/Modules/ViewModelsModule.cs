@@ -1,5 +1,6 @@
 ﻿using Autofac;
-using Books.Model.Entities;
+using Books.Domain.Entities;
+using Books.WPF.Services;
 using Books.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,14 +25,17 @@ namespace Books.WPF.Modules
             builder.Register<ViewModelBase>((c, p) =>
             {
                 var _type = p.TypedAs<ViewModelsType>();
-                var _model = p.TypedAs<BaseEntity>();
+
 
                 switch (_type)
                 {
                     case ViewModelsType.EditBookViewModel:
-                        return c.Resolve<EditBookViewModel>(new NamedParameter("entityBase", _model));
+                        var _model = p.TypedAs<Book>();
+                        return c.Resolve<EditBookViewModel>(new NamedParameter("book", _model));
                     case ViewModelsType.CardBookViewModel:
-                        return c.Resolve<CardBookViewModel>(new NamedParameter("entityBase", _model));
+                        _model = p.TypedAs<Book>();
+                        var _service = p.TypedAs<IBackendService>();
+                        return c.Resolve<CardBookViewModel>(new NamedParameter("book", _model), new NamedParameter("backendService", _service));
                     default:
                         return null;
                 }

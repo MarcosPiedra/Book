@@ -5,9 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Books.Model;
-using Books.Model.DTOs;
-using Books.Model.Entities;
+using Books.Domain.Entities;
 
 namespace Books.WPF.Services
 {
@@ -43,9 +41,9 @@ namespace Books.WPF.Services
             return bookCounter;
         }
 
-        public async Task<List<BookEntity>> GetBooksAsync(User user, int from, int to)
+        public async Task<List<Book>> GetBooksAsync(User user, int from, int to)
         {
-            List<BookEntity> books = new List<BookEntity>();
+            List<Book> books = new List<Book>();
             try
             {
                 using (var client = new HttpClient())
@@ -54,7 +52,7 @@ namespace Books.WPF.Services
                     var response = await client.GetAsync($"{_baseURI}/books?from={from}&to={to}");
                     if (response.IsSuccessStatusCode)
                     {
-                        books = await response.Content.ReadAsAsync<List<BookEntity>>();
+                        books = await response.Content.ReadAsAsync<List<Book>>();
                     }
                 }
             }
@@ -86,9 +84,9 @@ namespace Books.WPF.Services
             return user;
         }
 
-        public async Task<BookEntity> SaveBookAsync(User user, BookEntity book)
+        public async Task<Book> SaveBookAsync(User user, Book book)
         {
-            BookEntity bookToReturn = new BookEntity();
+            Book bookToReturn = new Book();
             try
             {
                 using (var client = new HttpClient())
@@ -97,7 +95,7 @@ namespace Books.WPF.Services
                     var response = await client.PutAsJsonAsync($"{_baseURI}/books", book);
                     if (response.IsSuccessStatusCode)
                     {
-                        bookToReturn = await response.Content.ReadAsAsync<BookEntity>();
+                        bookToReturn = await response.Content.ReadAsAsync<Book>();
                     }
                 }
             }
@@ -108,9 +106,9 @@ namespace Books.WPF.Services
             return bookToReturn;
         }
 
-        public async Task<BookEntity> NewBookAsync(User user, BookEntity book)
+        public async Task<Book> NewBookAsync(User user, Book book)
         {
-            BookEntity bookToReturn = new BookEntity();
+            Book bookToReturn = new Book();
             try
             {
                 using (var client = new HttpClient())
@@ -119,7 +117,7 @@ namespace Books.WPF.Services
                     var response = await client.PostAsJsonAsync($"{_baseURI}/books", book);
                     if (response.IsSuccessStatusCode)
                     {
-                        bookToReturn = await response.Content.ReadAsAsync<BookEntity>();
+                        bookToReturn = await response.Content.ReadAsAsync<Book>();
                     }
                 }
             }

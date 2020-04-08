@@ -1,6 +1,5 @@
 ﻿using Books.CrossCutting;
-using Books.Model;
-using Books.Model.Entities;
+using Books.Domain.Entities;
 using Books.WPF.Services;
 using System;
 using System.Collections.Generic;
@@ -13,19 +12,19 @@ namespace Books.WPF.ViewModels
 {
     public class CardBookViewModel : ViewModelBase
     {
-        public CardBookViewModel(BaseEntity entityBase)
+        private readonly IBackendService backendService;
+
+        public CardBookViewModel(Book book,
+                                 IBackendService backendService)
         {
-            Book = entityBase as BookEntity ?? throw new ArgumentNullException("BookEntity is null.");
+            Book = book;
             CheckAsReadCommand = CreateCommandAsync(CheckAsReadAsync);
+            this.backendService = backendService;
         }
 
-        private async Task CheckAsReadAsync(object arg)
-        {
-            await BackendService.SaveBookAsync(User, Book);
-        }
+        private async Task CheckAsReadAsync(object arg) => await backendService.SaveBookAsync(User, Book);
         public User User { get; set; }
-        public IBackendService BackendService { get; set; }
-        public BookEntity Book { get; set; }
+        public Book Book { get; set; }
         public bool IsReadOnly { get; } = true;
         public bool IsEnable { get; } = false;
         public ICommand CheckAsReadCommand { get; set; }

@@ -3,7 +3,7 @@ using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Books.Model;
+using Books.Data.EntityFramework;
 using Books.WebApi.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 namespace Books.WebApi
 {
@@ -62,12 +63,14 @@ namespace Books.WebApi
                 };
             });
             services.AddAutoMapper();
-            services.AddMemoryCache();
+
+            services.AddDbContext<BooksContext>((serviceProvider, optionsBuilder) =>
+            {
+                optionsBuilder.UseSqlServer(config.ConnectionString);
+            }, ServiceLifetime.Transient);
 
             var _builder = new ContainerBuilder();
             _builder.RegisterModule<CrossCuttingModule>();
-            _builder.RegisterModule<ServiceModule>();
-            _builder.RegisterModule<EFModule>();
             _builder.Populate(services);
             ApplicationContainer = _builder.Build();
 

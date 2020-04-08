@@ -1,5 +1,5 @@
 ﻿using Books.CrossCutting;
-using Books.Model.Entities;
+using Books.Domain.Entities;
 using Books.WPF.Services;
 using System;
 using System.Collections.Generic;
@@ -12,19 +12,19 @@ namespace Books.WPF.ViewModels
 {
     public class EditBookViewModel : ViewModelBase
     {
-        public EditBookViewModel(BaseEntity entityBase)
+        public EditBookViewModel(Book book)
         {
-            Book = entityBase as BookEntity ?? throw new ArgumentNullException("BookEntity is null.");
+            Book = book;
             AcceptCommand = CreateCommandAsync(AcceptAsync);
             CancelCommand = CreateCommandAsync(CancelAsync);
         }
 
-        public BookEntity Book { get; set; }
+        public Book Book { get; set; }
         public ICommand AcceptCommand { get; }
         public ICommand CancelCommand { get; }
         public bool IsReadOnly { get; } = false;
         public bool IsEnable { get; } = true;
-        public Func<BookEntity, Task> OnAcceptAsync;
+        public Func<Book, Task> OnAcceptAsync;
         public Action OnCancel;
 
         private async Task AcceptAsync(object arg)

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Books.Model;
-using Books.Model.DTOs;
-using Books.Model.Entities;
+using Books.Domain.Entities;
+using Books.WebApi.DTOs;
 using System.Collections.Generic;
 
 namespace BooksServicesWebApi.MapperDTO
@@ -10,8 +9,8 @@ namespace BooksServicesWebApi.MapperDTO
     {
         public MappingProfile()
         {
-            CreateMap<BookEntity, BookDTO>(); 
-            CreateMap<BookDTO, BookEntity>();
+            CreateMap<Book, BookDTO>(); 
+            CreateMap<BookDTO, Book>();
         }
     }
 }

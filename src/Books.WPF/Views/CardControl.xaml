@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel HorizontalAlignment="Center">
-        <materialDesign:Card Width="220" Margin="5">
+        <StackPanel Width="220" Margin="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
@@ -51,6 +51,6 @@
 
 
             </Grid>
-        </materialDesign:Card>
+        </StackPanel>
     </StackPanel>
 </UserControl>

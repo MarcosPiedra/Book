@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="UserAuthentication.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Log\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -15,6 +19,8 @@
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
 
@@ -24,9 +30,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Books.CrossCutting\Books.CrossCutting.csproj" />
-    <ProjectReference Include="..\Books.Model\Books.Model.csproj" />
-    <ProjectReference Include="..\Books.Repository\Books.Repository.csproj" />
-    <ProjectReference Include="..\Books.Service\Books.Service.csproj" />
+    <ProjectReference Include="..\Books.Data\Books.Data.csproj" />
+    <ProjectReference Include="..\Books.Model\Books.Domain.csproj" />
   </ItemGroup>
 
 </Project>

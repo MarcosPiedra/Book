@@ -4,10 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Books.CrossCutting;
-using Books.Model;
-using Books.Model.DTOs;
-using Books.Model.Entities;
+using Books.Domain.Entities;
 using Books.Service;
+using Books.WebApi.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,28 +16,30 @@ namespace Books.WebApi.Controllers
     [Route("api/v1")]
     public class BooksController : Controller
     {
-        IMapper _mapper;
-        ILogger _logger;
-        IUserService _userService;
-        IBooksService _booksServices;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
+        private readonly UserAuthentication _userAuthentication;
+        private readonly IUserService _userService;
+        private readonly IBooksService _booksServices;
 
         public BooksController(IUserService userService
                              , IBooksService booksServices
                              , IMapper mapper
-                             , ILogger logger)
+                             , ILogger logger
+                             , UserAuthentication userAuthentication)
         {
             _userService = userService;
             _booksServices = booksServices;
             _mapper = mapper;
             _logger = logger;
-
+            _userAuthentication = userAuthentication;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]UserDTO userParam)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
+            var user = _userAuthentication.Authenticate(userParam.Username, userParam.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -50,7 +51,7 @@ namespace Books.WebApi.Controllers
         [Route("books")]
         public async Task<IActionResult> GetBooksAsync(int from = 0, int to = 0)
         {
-            List<BookEntity> books = null;
+            List<Book> books = null;
             try
             {
                 books = await _booksServices.GetBooksAsync();
@@ -71,15 +72,14 @@ namespace Books.WebApi.Controllers
                              .ToList();
             }
 
-            return Json(_mapper.Map<List<BookEntity>, List<BookDTO>>(books));
+            return Json(_mapper.Map<List<Book>, List<BookDTO>>(books));
         }
 
         [HttpPost]
         [Route("books")]
-        public async Task<IActionResult> AddtBooksAsync([FromBody] BookDTO bookDTO)
+        public async Task<IActionResult> AddBooksAsync([FromBody] BookDTO bookDTO)
         {
-            var bookToAdd = _mapper.Map<BookDTO, BookEntity>(bookDTO);
-            bookToAdd.Id = null;
+            var bookToAdd = _mapper.Map<BookDTO, Book>(bookDTO);
             try
             {
                 await _booksServices.AddBookAsync(bookToAdd);
@@ -91,14 +91,14 @@ namespace Books.WebApi.Controllers
                 return NoContent();
             }
 
-            return Json(_mapper.Map<BookEntity, BookDTO>(bookToAdd));
+            return Json(_mapper.Map<Book, BookDTO>(bookToAdd));
         }
 
         [HttpPut]
         [Route("books")]
         public async Task<IActionResult> UpdateBooksAsync([FromBody] BookDTO bookDTO)
         {
-            var bookToAdd = _mapper.Map<BookDTO, BookEntity>(bookDTO);
+            var bookToAdd = _mapper.Map<BookDTO, Book>(bookDTO);
             try
             {
                 await _booksServices.UpdateToReadStatusAsync(bookToAdd);
@@ -110,14 +110,14 @@ namespace Books.WebApi.Controllers
                 return NoContent();
             }
 
-            return Json(_mapper.Map<BookEntity, BookDTO>(bookToAdd));
+            return Json(_mapper.Map<Book, BookDTO>(bookToAdd));
         }
 
         [HttpDelete]
         [Route("books")]
         public async Task<IActionResult> DeleteBooksAsync([FromBody] BookDTO bookDTO)
         {
-            var bookToAdd = _mapper.Map<BookDTO, BookEntity>(bookDTO);
+            var bookToAdd = _mapper.Map<BookDTO, Book>(bookDTO);
             try
             {
                 await _booksServices.RemoveAsync(bookToAdd);

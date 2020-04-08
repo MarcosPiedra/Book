@@ -1,6 +1,5 @@
 ﻿using Books.CrossCutting;
-using Books.Model;
-using Books.Model.Entities;
+using Books.Domain.Entities;
 using Books.WPF.Modules;
 using Books.WPF.Services;
 using System;
@@ -21,7 +20,7 @@ namespace Books.WPF.ViewModels
         IWindowManager _windowManager = null;
         User _currentUser = null;
         ILogger _logger = null;
-        Func<ViewModelsType, BaseEntity, ViewModelBase> _viewModelFactory;
+        Func<ViewModelsType, object, IBackendService, ViewModelBase> _viewModelFactory;
         bool _isConnected = false;
         string _loadText = "Load...";
         bool _firstSixLoaded = false;
@@ -29,7 +28,7 @@ namespace Books.WPF.ViewModels
         int _booksLoaded = 0;
         bool _canConnect = true;
 
-        public MainViewModel(Func<ViewModelsType, BaseEntity, ViewModelBase> viewModelFactory
+        public MainViewModel(Func<ViewModelsType, object, IBackendService, ViewModelBase> viewModelFactory
                            , Func<string, IBackendService> backendFactory
                            , IWindowManager windowManager
                            , ILogger logger)
@@ -134,14 +133,13 @@ namespace Books.WPF.ViewModels
                 return;
             }
 
-            var entity = new BookEntity() { PublicationDate = DateTime.Now, Id = 0 };
-            var vm = _viewModelFactory.Invoke(ViewModelsType.EditBookViewModel, entity) as EditBookViewModel;
+            var entity = new Book() { PublicationDate = DateTime.Now, Id = 0 };
+            var vm = _viewModelFactory.Invoke(ViewModelsType.EditBookViewModel, entity, _currentBackend) as EditBookViewModel;
 
             vm.OnAcceptAsync = async (book) =>
             {
                 var newBook = await _currentBackend.NewBookAsync(_currentUser, entity);
-                var cardVm = _viewModelFactory(ViewModelsType.CardBookViewModel, newBook) as CardBookViewModel;
-                cardVm.BackendService = _currentBackend;
+                var cardVm = _viewModelFactory(ViewModelsType.CardBookViewModel, newBook, _currentBackend) as CardBookViewModel;
                 cardVm.User = _currentUser;
                 CardBooks.Add(cardVm);
                 _totalBooks++;
@@ -187,22 +185,18 @@ namespace Books.WPF.ViewModels
             books.ToList()
                  .ForEach(b =>
                  {
-                     if (CardBooks.Count(cb => cb.Book.Id.HasValue && cb.Book.Id == b.Id) > 0)
-                     {
+                     if (CardBooks.Count(cb => cb.Book.Id == b.Id) > 0)
                          return;
-                     }
 
-                     var cardVm = _viewModelFactory(ViewModelsType.CardBookViewModel, b) as CardBookViewModel;
-                     cardVm.BackendService = _currentBackend;
-                     cardVm.User = _currentUser;
-                     CardBooks.Add(cardVm);
+                     var _cardVm = _viewModelFactory(ViewModelsType.CardBookViewModel, b, _currentBackend) as CardBookViewModel;
+                     _cardVm.User = _currentUser;
+                     CardBooks.Add(_cardVm);
                  });
 
             _booksLoaded = booksToLoad;
             if (_totalBooks == _booksLoaded)
-            {
                 LoadText = $"--";
-            }
+
             _firstSixLoaded = true;
             CanConnect = true;
         }
