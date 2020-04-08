@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Books.CrossCutting\Books.CrossCutting.csproj" />
     <ProjectReference Include="..\Books.Data\Books.Data.csproj" />
+    <ProjectReference Include="..\Books.Domain\Books.Domain.csproj" />
     <ProjectReference Include="..\Books.Model\Books.Domain.csproj" />
   </ItemGroup>
 

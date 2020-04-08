@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Books.Service
+namespace Books.Domain
 {
     public interface IUserService
     {

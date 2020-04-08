@@ -1,5 +1,5 @@
-﻿using Books.Domain.Entities;
-using Books.Service;
+﻿using Books.Domain;
+using Books.Domain.Entities;
 using Books.WebApi.DTOs;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

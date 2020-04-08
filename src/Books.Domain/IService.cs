@@ -1,4 +1,4 @@
-﻿namespace Books.Service
+﻿namespace Books.Domain
 {
     public interface IService
     {

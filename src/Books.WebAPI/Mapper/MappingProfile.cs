@@ -3,7 +3,7 @@ using Books.Domain.Entities;
 using Books.WebApi.DTOs;
 using System.Collections.Generic;
 
-namespace BooksServicesWebApi.MapperDTO
+namespace Books.WebApi.Mapper
 {
     public class MappingProfile : Profile
     {

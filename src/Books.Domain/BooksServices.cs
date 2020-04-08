@@ -7,7 +7,7 @@ using Books.Domain;
 using Books.Domain.Entities;
 using Books.Domain.Repository;
 
-namespace Books.Service
+namespace Books.Domain
 {
     public class BooksService : IBooksService
     {

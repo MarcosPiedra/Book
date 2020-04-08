@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Books.Service
+namespace Books.Domain
 {
     public class UserService : IUserService
     {
